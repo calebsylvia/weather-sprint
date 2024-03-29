@@ -13,7 +13,7 @@ const MapComponent = ({lat, lng}: position) => {
     })
 
   return (
-    <APIProvider apiKey={process.env.NODE_PUBLIC_MAP_KEY}>
+    <APIProvider apiKey={process.env.NEXT_PUBLIC_MAP_KEY}>
       <Map defaultCenter={{lat, lng}} defaultZoom={14} key={new Date().getTime()}>
         
       </Map>
