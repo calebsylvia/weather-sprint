@@ -52,8 +52,14 @@ const WeatherApp = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isFav, setIsFav] = useState<boolean>(false);
   const [favImg, setFavImg] = useState<string | StaticImageData>(notFavStar);
+  const [favArry, setFavArr] = useState<string[]>([])
+
+
+
 
   useEffect(() => {
+
+
     if (searchCity === "") {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -70,21 +76,15 @@ const WeatherApp = () => {
             console.log(data.lon)
           setLat(data.lat);
           setLng(data.lon);
+          setFavImg(favImg)
         };
 
         getCoords();
       }
     }
 
-    const setFavorites = () => {
-
-        let favorites = getLocal()
-
-        if(favorites.includes(searchCity)){
-            setIsFav(true)
-            setFavImg(favStar)
-        }
-    }
+    let favorites = getLocal();
+   setFavArr(favorites)
 
 
     const getCurrentWeather = async () => {
@@ -260,15 +260,17 @@ const WeatherApp = () => {
           direction="top"
           size={200}
           className="bg-[#CAE8FF] w-screen"
-        ></Drawer>
+        >
+          
+        </Drawer>
       </div>
 
       {/* Main Body */}
-      <div className=" h-full w-full pt-3 mx-20">
-        <div className="flex">
-          <div className="bg-[#CAE8FF] w-1/4 h-96 opacity-75 rounded-xl mr-10">
+      <div className=" h-full w-full pt-3 md:mx-20">
+        <div className="md:flex">
+          <div className="bg-[#CAE8FF] w-5/6 md:w-1/4 h-80 md:h-96 opacity-75 rounded-xl max-md:mx-auto md:mr-10">
             <div className="">
-              <div className="flex justify-between mx-6 mt-6">
+              <div className="flex justify-between mx-6 mt-10 md:mt-6">
                 <p className="text-2xl">{cityName}</p>
                 <button onClick={handleFav}>
                   <Image src={favImg} alt="Favorite Star Button" />
@@ -290,7 +292,7 @@ const WeatherApp = () => {
               </div>
             </div>
           </div>
-          <div className="bg-[#CAE8FF] w-3/5 h-96 opacity-75 rounded-xl flex flex-row justify-between">
+          <div className="bg-[#CAE8FF] w-5/6 lg:w-3/5 h-full opacity-75 rounded-xl lg:flex flex-row justify-between max-md:mx-auto mt-5 lg:mt-0">
             <div className="space-y-12 my-auto ml-8">
               <div className="flex">
                 <Image
@@ -326,8 +328,8 @@ const WeatherApp = () => {
                 </div>
               </div>
             </div>
-            <div className="mr-10 mt-6">
-              <div className="w-[500px] h-56">
+            <div className="mx-auto lg:mr-10 mt-6">
+              <div className="w-[500px] h-56 max-md:hidden">
                 <MapComponent lat={lat} lng={lng} />
               </div>
               <div className="flex justify-center space-x-12 mb-2">

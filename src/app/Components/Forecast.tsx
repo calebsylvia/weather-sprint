@@ -231,32 +231,32 @@ const Forecast = ({ lat, lng }: position) => {
   }, [lat, lng]);
 
   return (
-    <div className="flex justify-center mt-6 space-x-20 text-[#212A79]">
-      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl text-xl">
+    <div className="lg:flex justify-center mt-6 md:space-x-20 text-[#212A79]">
+      <div className="bg-[#CAE8FF] opacity-75 text-center w-1/2 md:w-[13%] h-56 rounded-xl text-xl max-md:mx-auto ">
         <p className="mt-5">{dayOne}</p>
         <Image src={dayOneImg} alt={dayOneAlt} className="w-24 mx-auto"/>
         <p>{`High: ${dayOneHigh}`}</p>
         <p className="mn-6">{`Low: ${dayOneLow}`}</p>
       </div>
-      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl text-xl">
+      <div className="bg-[#CAE8FF] opacity-75 text-center w-1/2 md:w-[13%] h-56 rounded-xl text-xl max-md:mx-auto ">
         <p className="mt-5">{dayTwo}</p>
         <Image src={dayTwoImg} alt={dayTwoAlt} className="w-24 mx-auto" />
         <p>{`High: ${dayTwoHigh}`}</p>
         <p className="mn-6">{`Low: ${dayTwoLow}`}</p>
       </div>
-      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl text-xl">
+      <div className="bg-[#CAE8FF] opacity-75 text-center w-1/2 md:w-[13%] h-56 rounded-xl text-xl max-md:mx-auto ">
         <p className="mt-5">{dayThree}</p>
         <Image src={dayThreeImg} alt={dayThreeAlt} className="w-24 mx-auto" />
         <p>{`High: ${dayThreeHigh}`}</p>
         <p className="mn-6">{`Low: ${dayThreeLow}`}</p>
       </div>
-      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl text-xl">
+      <div className="bg-[#CAE8FF] opacity-75 text-center w-1/2 md:w-[13%] h-56 rounded-xl text-xl max-md:mx-auto ">
         <p className="mt-5">{dayFour}</p>
         <Image src={dayFourImg} alt={dayFourAlt} className="w-24 mx-auto" />
         <p>{`High: ${dayFourHigh}`}</p>
         <p className="mn-6">{`Low: ${dayFourLow}`}</p>
       </div>
-      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl text-xl">
+      <div className="bg-[#CAE8FF] opacity-75 text-center w-1/2 md:w-[13%] h-56 rounded-xl text-xl max-md:mx-auto ">
         <p className="mt-5">{dayFive}</p>
         <Image src={dayFiveImg} alt={dayFiveAlt} className="w-24 mx-auto" />
         <p>{`High: ${dayFiveHigh}`}</p>
