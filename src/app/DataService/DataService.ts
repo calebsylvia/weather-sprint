@@ -15,13 +15,13 @@ export const getForecast = async(lat: number, lng: number) => {
 }
 
 export const getCity = async(lat: number , lng: number) => {
-    const promise = await fetch(`http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lng}&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}`);
+    const promise = await fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lng}&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}`);
     const data = await promise.json();
     return data[0];
 }
 
 export const getWeatherBySearch = async(cityName: string) => {
-    const promise = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}`);
+    const promise = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}`);
     const data = promise.json();
     return data;
 }
