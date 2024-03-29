@@ -22,6 +22,6 @@ export const getCity = async(lat: number , lng: number) => {
 
 export const getWeatherBySearch = async(cityName: string) => {
     const promise = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}`);
-    const data = promise.json();
-    return data;
+    const data = await promise.json();
+    return data[0];
 }

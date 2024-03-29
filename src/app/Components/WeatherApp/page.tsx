@@ -20,8 +20,12 @@ import notFavStar from "@/app/assets/Star.png";
 import Image, { StaticImageData } from "next/image";
 import MapComponent from "../MapComponent";
 import Forecast from "../Forecast";
-import { Coord, ICity, Main } from "@/app/Interfaces/Interfaces";
-import { getCity, getWeather, getWeatherBySearch } from "@/app/DataService/DataService";
+import { Coord, ICity, Main, cities } from "@/app/Interfaces/Interfaces";
+import {
+  getCity,
+  getWeather,
+  getWeatherBySearch,
+} from "@/app/DataService/DataService";
 import { getLocal, saveLocal, removeLocal } from "@/app/Utils/LocalStorage";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
@@ -29,8 +33,8 @@ import "react-modern-drawer/dist/index.css";
 const WeatherApp = () => {
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
-  const [searchCity, setSearchCity] = useState<string>("")
-  const [input, setInput] = useState<string>("")
+  const [searchCity, setSearchCity] = useState<string>("");
+  const [input, setInput] = useState<string>("");
   const [degrees, setDegrees] = useState<number>(0);
   const [low, setLow] = useState<number>(0);
   const [high, setHigh] = useState<number>(0);
@@ -49,29 +53,39 @@ const WeatherApp = () => {
   const [isFav, setIsFav] = useState<boolean>(false);
   const [favImg, setFavImg] = useState<string | StaticImageData>(notFavStar);
 
-  
-
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setLat(position.coords.latitude);
-        setLng(position.coords.longitude);
-      });
+    if (searchCity === "") {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          setLat(position.coords.latitude);
+          setLng(position.coords.longitude);
+        });
+      } else {
+        console.log("Geolocation is not supported on your browser.");
+      }
     } else {
-      console.log("Geolocation is not supported on your browser.");
+      if (searchCity !== "") {
+        const getCoords = async () => {
+          const data = await getWeatherBySearch(searchCity);
+            console.log(data.lon)
+          setLat(data.lat);
+          setLng(data.lon);
+        };
+
+        getCoords();
+      }
     }
 
-    if(searchCity !== ""){
-        const getCoords = async() => {
-           
-            const data = await getWeatherBySearch(input)
-            
-            setLat(data.lat)
-            setLng(data.lon)
+    const setFavorites = () => {
+
+        let favorites = getLocal()
+
+        if(favorites.includes(searchCity)){
+            setIsFav(true)
+            setFavImg(favStar)
         }
-
-        getCoords()
     }
+
 
     const getCurrentWeather = async () => {
       const data = await getWeather(lat, lng);
@@ -103,10 +117,10 @@ const WeatherApp = () => {
       }
 
       if (data.rain?.["1h"]) {
-        setIsSnow(false)
+        setIsSnow(false);
         setPrec(data.rain?.["1h"]);
       } else if (data.snow?.["1h"]) {
-        setIsSnow(true)
+        setIsSnow(true);
         setPrec(data.snow?.["1h"]);
       }
 
@@ -159,8 +173,8 @@ const WeatherApp = () => {
       let riseHours = rise.getHours();
       let riseMinutes = "0" + rise.getMinutes();
 
-      setSunSet(`${setHours}:${setMinutes.substr(-2)}`)
-      setRise(`${riseHours}:${riseMinutes.substr(-2)}`)
+      setSunSet(`${setHours}:${setMinutes.substr(-2)}`);
+      setRise(`${riseHours}:${riseMinutes.substr(-2)}`);
     };
 
     const getCurrentCity = async () => {
@@ -175,9 +189,10 @@ const WeatherApp = () => {
       );
     };
 
+   
     getCurrentWeather();
     getCurrentCity();
-  }, [lat, lng]);
+  }, [lat, lng, input, searchCity]);
 
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
@@ -210,13 +225,23 @@ const WeatherApp = () => {
             type="search"
             placeholder="Enter City Name..."
             className="rounded-2xl w-60 h-7"
-            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>) => {if((e as React.KeyboardEvent<HTMLInputElement>).key === "Enter"){
-                setSearchCity((e as React.ChangeEvent<HTMLInputElement>).target.value)
-                if(searchCity !== ''){
-                  setInput(searchCity)
+            onKeyDown={(
+              e:
+                | React.KeyboardEvent<HTMLInputElement>
+                | React.ChangeEvent<HTMLInputElement>
+            ) => {
+              if (
+                (e as React.KeyboardEvent<HTMLInputElement>).key === "Enter"
+              ) {
+                setSearchCity(
+                  (e as React.ChangeEvent<HTMLInputElement>).target.value
+                );
+                if (searchCity !== "") {
+                  setInput(searchCity);
                 }
-                (e as React.ChangeEvent<HTMLInputElement>).target.value = ''
-              }}}
+                (e as React.ChangeEvent<HTMLInputElement>).target.value = "";
+              }
+            }}
           ></input>
         </div>
       </div>
@@ -303,7 +328,7 @@ const WeatherApp = () => {
             </div>
             <div className="mr-10 mt-6">
               <div className="w-[500px] h-56">
-                <MapComponent lat={lat} lng={lng}/>
+                <MapComponent lat={lat} lng={lng} />
               </div>
               <div className="flex justify-center space-x-12 mb-2">
                 <p>{`Lat: ${Math.round(lat * 1000) / 1000}`}</p>
@@ -311,11 +336,19 @@ const WeatherApp = () => {
               </div>
               <div className="flex justify-evenly">
                 <div className="">
-                  <Image src={sunrise} alt="Sunrise Icon" className="w-16 mx-auto" />
+                  <Image
+                    src={sunrise}
+                    alt="Sunrise Icon"
+                    className="w-16 mx-auto"
+                  />
                   <p>{`Sunrise: ${rise}`}</p>
                 </div>
                 <div className="mt-2">
-                  <Image src={sunset} alt="Sunrise Icon" className="w-12 mb-[6px] mx-auto" />
+                  <Image
+                    src={sunset}
+                    alt="Sunrise Icon"
+                    className="w-12 mb-[6px] mx-auto"
+                  />
                   <p>{`Sunset: ${sunSet}`}</p>
                 </div>
               </div>
