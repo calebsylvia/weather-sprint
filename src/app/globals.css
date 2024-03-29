@@ -23,7 +23,7 @@ body {
 }
 
 ::placeholder{
-  padding-left: 8px;
+  padding-left: 16px;
 }
 
 .drawer{

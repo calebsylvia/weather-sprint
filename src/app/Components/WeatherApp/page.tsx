@@ -23,7 +23,6 @@ import Forecast from "../Forecast";
 import { Coord, ICity, Main } from "@/app/Interfaces/Interfaces";
 import { getCity, getWeather, getWeatherBySearch } from "@/app/DataService/DataService";
 import { getLocal, saveLocal, removeLocal } from "@/app/Utils/LocalStorage";
-import { weatherKey } from "../../../../Keys/Key";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 
@@ -50,6 +49,8 @@ const WeatherApp = () => {
   const [isFav, setIsFav] = useState<boolean>(false);
   const [favImg, setFavImg] = useState<string | StaticImageData>(notFavStar);
 
+  
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -62,7 +63,8 @@ const WeatherApp = () => {
 
     if(searchCity !== ""){
         const getCoords = async() => {
-            const data = await getWeatherBySearch(input, weatherKey)
+           
+            const data = await getWeatherBySearch(input, process.env.NEXT_PUBLIC_WEATHER_KEY)
             
             setLat(data.lat)
             setLng(data.lon)
@@ -72,7 +74,7 @@ const WeatherApp = () => {
     }
 
     const getCurrentWeather = async () => {
-      const data = await getWeather(lat, lng, weatherKey);
+      const data = await getWeather(lat, lng, process.env.NEXT_PUBLIC_WEATHER_KEY);
 
       setDegrees(Math.floor(data.main.temp));
       setLow(Math.floor(data.main.temp_min));
@@ -162,7 +164,7 @@ const WeatherApp = () => {
     };
 
     const getCurrentCity = async () => {
-      const cityData: ICity = await getCity(lat, lng, weatherKey);
+      const cityData: ICity = await getCity(lat, lng, process.env.NEXT_PUBLIC_WEATHER_KEY);
 
       console.log(cityData);
       setFavCity(cityData.name);

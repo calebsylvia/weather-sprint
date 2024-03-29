@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { IForecast, position } from "../Interfaces/Interfaces";
 import { getLocal } from "../Utils/LocalStorage";
 import { getForecast } from "../DataService/DataService";
-import { weatherKey } from "../../../Keys/Key";
 import Image, { StaticImageData } from "next/image";
 import sun from "@/app/assets/sun.png";
 import cloud from "@/app/assets/cloud.png";
@@ -18,27 +17,27 @@ const Forecast = ({ lat, lng }: position) => {
   const [dayOne, setDayOne] = useState<string>("");
   const [dayOneHigh, setDayOneHigh] = useState<number>(0);
   const [dayOneLow, setDayOneLow] = useState<number>(0);
-  const [dayOneImg, setDayOneImg] = useState<string | StaticImageData>("");
+  const [dayOneImg, setDayOneImg] = useState<string | StaticImageData>(cloud);
   const [dayOneAlt, setDayOneAlt] = useState<string>("");
   const [dayTwo, setDayTwo] = useState<string>("");
   const [dayTwoHigh, setDayTwoHigh] = useState<number>(0);
   const [dayTwoLow, setDayTwoLow] = useState<number>(0);
-  const [dayTwoImg, setDayTwoImg] = useState<string | StaticImageData>("");
+  const [dayTwoImg, setDayTwoImg] = useState<string | StaticImageData>(cloud);
   const [dayTwoAlt, setDayTwoAlt] = useState<string>("");
   const [dayThree, setDayThree] = useState<string>("");
   const [dayThreeHigh, setDayThreeHigh] = useState<number>(0);
   const [dayThreeLow, setDayThreeLow] = useState<number>(0);
-  const [dayThreeImg, setDayThreeImg] = useState<string | StaticImageData>("");
+  const [dayThreeImg, setDayThreeImg] = useState<string | StaticImageData>(cloud);
   const [dayThreeAlt, setDayThreeAlt] = useState<string>("");
   const [dayFour, setDayFour] = useState<string>("");
   const [dayFourHigh, setDayFourHigh] = useState<number>(0);
   const [dayFourLow, setDayFourLow] = useState<number>(0);
-  const [dayFourImg, setDayFourImg] = useState<string | StaticImageData>("");
+  const [dayFourImg, setDayFourImg] = useState<string | StaticImageData>(cloud);
   const [dayFourAlt, setDayFourAlt] = useState<string>("");
   const [dayFive, setDayFive] = useState<string>("");
   const [dayFiveHigh, setDayFiveHigh] = useState<number>(0);
   const [dayFiveLow, setDayFiveLow] = useState<number>(0);
-  const [dayFiveImg, setDayFiveImg] = useState<string | StaticImageData>("");
+  const [dayFiveImg, setDayFiveImg] = useState<string | StaticImageData>(cloud);
   const [dayFiveAlt, setDayFiveAlt] = useState<string>("");
 
   function mostFrequent(arr: string[]) {
@@ -92,7 +91,7 @@ const Forecast = ({ lat, lng }: position) => {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getForecast(lat, lng, weatherKey);
+      const data = await getForecast(lat, lng, process.env.NEXT_PUBLIC_WEATHER_KEY);
 
       let day1max = [];
       let day2max = [];
@@ -230,32 +229,36 @@ const Forecast = ({ lat, lng }: position) => {
   }, [lat, lng]);
 
   return (
-    <div className="flex justify-center mt-6 space-x-20">
-      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl">
-        <p>{dayOne}</p>
-        <Image src={dayOneImg} alt={dayOneAlt} />
+    <div className="flex justify-center mt-6 space-x-20 text-[#212A79]">
+      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl text-xl">
+        <p className="mt-5">{dayOne}</p>
+        <Image src={dayOneImg} alt={dayOneAlt} className="w-24 mx-auto"/>
         <p>{`High: ${dayOneHigh}`}</p>
-        <p>{`Low: ${dayOneLow}`}</p>
+        <p className="mn-6">{`Low: ${dayOneLow}`}</p>
       </div>
-      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl">
-        <p>{dayTwo}</p>
+      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl text-xl">
+        <p className="mt-5">{dayTwo}</p>
+        <Image src={dayTwoImg} alt={dayTwoAlt} className="w-24 mx-auto" />
         <p>{`High: ${dayTwoHigh}`}</p>
-        <p>{`Low: ${dayTwoLow}`}</p>
+        <p className="mn-6">{`Low: ${dayTwoLow}`}</p>
       </div>
-      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl">
-        <p>{dayThree}</p>
+      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl text-xl">
+        <p className="mt-5">{dayThree}</p>
+        <Image src={dayThreeImg} alt={dayThreeAlt} className="w-24 mx-auto" />
         <p>{`High: ${dayThreeHigh}`}</p>
-        <p>{`Low: ${dayThreeLow}`}</p>
+        <p className="mn-6">{`Low: ${dayThreeLow}`}</p>
       </div>
-      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl">
-        <p>{dayFour}</p>
+      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl text-xl">
+        <p className="mt-5">{dayFour}</p>
+        <Image src={dayFourImg} alt={dayFourAlt} className="w-24 mx-auto" />
         <p>{`High: ${dayFourHigh}`}</p>
-        <p>{`Low: ${dayFourLow}`}</p>
+        <p className="mn-6">{`Low: ${dayFourLow}`}</p>
       </div>
-      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl">
-        <p>{dayFive}</p>
+      <div className="bg-[#CAE8FF] opacity-75 text-center w-[13%] h-56 rounded-xl text-xl">
+        <p className="mt-5">{dayFive}</p>
+        <Image src={dayFiveImg} alt={dayFiveAlt} className="w-24 mx-auto" />
         <p>{`High: ${dayFiveHigh}`}</p>
-        <p>{`Low: ${dayFiveLow}`}</p>
+        <p className="mn-6">{`Low: ${dayFiveLow}`}</p>
       </div>
     </div>
   );
