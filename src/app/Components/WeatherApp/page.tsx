@@ -64,7 +64,7 @@ const WeatherApp = () => {
     if(searchCity !== ""){
         const getCoords = async() => {
            
-            const data = await getWeatherBySearch(input, process.env.NEXT_PUBLIC_WEATHER_KEY)
+            const data = await getWeatherBySearch(input)
             
             setLat(data.lat)
             setLng(data.lon)
@@ -74,7 +74,7 @@ const WeatherApp = () => {
     }
 
     const getCurrentWeather = async () => {
-      const data = await getWeather(lat, lng, process.env.NEXT_PUBLIC_WEATHER_KEY);
+      const data = await getWeather(lat, lng);
 
       setDegrees(Math.floor(data.main.temp));
       setLow(Math.floor(data.main.temp_min));
@@ -164,7 +164,7 @@ const WeatherApp = () => {
     };
 
     const getCurrentCity = async () => {
-      const cityData: ICity = await getCity(lat, lng, process.env.NEXT_PUBLIC_WEATHER_KEY);
+      const cityData: ICity = await getCity(lat, lng);
 
       console.log(cityData);
       setFavCity(cityData.name);

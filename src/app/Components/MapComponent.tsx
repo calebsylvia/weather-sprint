@@ -7,6 +7,7 @@ const MapComponent = ({lat, lng}: position) => {
 
     const [position, setPosition] = useState({ latitude: null, longitude: null })
 
+    
     useEffect(() => {
         
     })

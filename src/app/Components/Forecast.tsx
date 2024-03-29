@@ -89,9 +89,11 @@ const Forecast = ({ lat, lng }: position) => {
     }
   };
 
+
+
   useEffect(() => {
     const getData = async () => {
-      const data = await getForecast(lat, lng, process.env.NEXT_PUBLIC_WEATHER_KEY);
+      const data = await getForecast(lat, lng);
 
       let day1max = [];
       let day2max = [];
