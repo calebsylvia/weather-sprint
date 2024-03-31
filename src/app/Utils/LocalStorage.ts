@@ -1,32 +1,37 @@
 
-export const saveLocal = (city: string) => {
-    
-    let favorites = getLocal();
+export const saveLocal = (location: string) => {
+    if (typeof window !== 'undefined') {
+        let favorites = getLocal();
 
-    if(!favorites.includes(city)){
-        favorites.push(city);
+        if(!favorites.includes(location)){
+            favorites.push(location);
+            console.log(favorites)
+        }
+
+        localStorage.setItem("Favorites", JSON.stringify(favorites));
     }
-
-    localStorage.setItem("Favorites", JSON.stringify(favorites));
-}
+};
 
 export const getLocal = () => {
-    let localData = localStorage.getItem("Favorites");
+    if (typeof window !== 'undefined') {
+        let localStorageData = localStorage.getItem("Favorites");
 
-    if(localData == null){
-        return [];
+        if(localStorageData == null){
+            return [];
+        }
+
+        return JSON.parse(localStorageData);
     }
-        return JSON.parse(localData);
-}
-    
+    return [];
+};
 
-export const removeLocal = (city: string) => {
+export const removeLocal = (location: string) => {
+    if (typeof window !== 'undefined') {
         let favorites = getLocal();
-        let index = favorites.indexOf(city);
-    
-        favorites.splice(index, 1);
-    
-        console.log(favorites)
-        localStorage.setItem("Favorites", JSON.stringify(favorites))
-}
+        let namedIndex = favorites.indexOf(location);
+
+        favorites.splice(namedIndex, 1);
+        localStorage.setItem("Favorites", JSON.stringify(favorites));
+    }
+};
 

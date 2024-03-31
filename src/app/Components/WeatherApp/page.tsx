@@ -29,6 +29,7 @@ import {
 import { getLocal, saveLocal, removeLocal } from "@/app/Utils/LocalStorage";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
+import DisplayFavs from "../DisplayFavs";
 
 const WeatherApp = () => {
   const [lat, setLat] = useState<number>(0);
@@ -50,7 +51,7 @@ const WeatherApp = () => {
   const [weatherImg, setWeatherImg] = useState<string | StaticImageData>("");
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isFav, setIsFav] = useState<boolean>(false);
+  const [isFav, setIsFav] = useState<boolean>();
   const [favImg, setFavImg] = useState<string | StaticImageData>(notFavStar);
   const [favArry, setFavArr] = useState<string[]>([])
 
@@ -76,7 +77,8 @@ const WeatherApp = () => {
             console.log(data.lon)
           setLat(data.lat);
           setLng(data.lon);
-          setFavImg(favImg)
+          setIsFav(false)
+          setFavImg(notFavStar)
         };
 
         getCoords();
@@ -95,6 +97,7 @@ const WeatherApp = () => {
       setHigh(Math.floor(data.main.temp_max));
       setWind(data.wind.speed);
       setHumid(data.main.humidity);
+      setFavCity(data.name) 
 
       if (data.wind.deg >= 0 && data.wind.deg < 30) {
         setWindDir("East");
@@ -181,7 +184,7 @@ const WeatherApp = () => {
       const cityData: ICity = await getCity(lat, lng);
 
       console.log(cityData);
-      setFavCity(cityData.name);
+      
       setCityName(
         `${cityData.name}, ${
           cityData.state ? cityData.state : cityData.country
@@ -199,14 +202,12 @@ const WeatherApp = () => {
   };
 
   const handleFav = () => {
-    setIsFav(!isFav);
-
-    if (isFav === true) {
-      saveLocal(favCity);
-      setFavImg(favStar);
+    if (isFav) {
+      setIsFav(!isFav);
+      removeLocal(cityName);
     } else {
-      removeLocal(favCity);
-      setFavImg(notFavStar);
+      setIsFav(!isFav);
+      saveLocal(cityName);
     }
   };
 
@@ -246,7 +247,7 @@ const WeatherApp = () => {
         </div>
       </div>
       <div className="relative">
-        <button>
+        <button className="absolute right-10 top-0">
           <Image
             onClick={toggleDrawer}
             src={favTab}
@@ -259,14 +260,14 @@ const WeatherApp = () => {
           onClose={toggleDrawer}
           direction="top"
           size={200}
-          className="bg-[#CAE8FF] w-screen"
+          className="bg-[#CAE8FF] w-screen items-center"
         >
-          
+          <DisplayFavs/>
         </Drawer>
       </div>
 
       {/* Main Body */}
-      <div className=" h-full w-full pt-3 md:mx-20">
+      <div className=" h-full w-full pt-20 md:mx-20">
         <div className="md:flex">
           <div className="bg-[#CAE8FF] w-5/6 md:w-1/4 h-80 md:h-96 opacity-75 rounded-xl max-md:mx-auto md:mr-10">
             <div className="">

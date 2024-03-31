@@ -18,50 +18,42 @@ const Forecast = ({ lat, lng }: position) => {
   const [dayOneHigh, setDayOneHigh] = useState<number>(0);
   const [dayOneLow, setDayOneLow] = useState<number>(0);
   const [dayOneImg, setDayOneImg] = useState<string | StaticImageData>(cloud);
-  const [dayOneAlt, setDayOneAlt] = useState<string>("");
   const [dayTwo, setDayTwo] = useState<string>("");
   const [dayTwoHigh, setDayTwoHigh] = useState<number>(0);
   const [dayTwoLow, setDayTwoLow] = useState<number>(0);
   const [dayTwoImg, setDayTwoImg] = useState<string | StaticImageData>(cloud);
-  const [dayTwoAlt, setDayTwoAlt] = useState<string>("");
   const [dayThree, setDayThree] = useState<string>("");
   const [dayThreeHigh, setDayThreeHigh] = useState<number>(0);
   const [dayThreeLow, setDayThreeLow] = useState<number>(0);
   const [dayThreeImg, setDayThreeImg] = useState<string | StaticImageData>(cloud);
-  const [dayThreeAlt, setDayThreeAlt] = useState<string>("");
   const [dayFour, setDayFour] = useState<string>("");
   const [dayFourHigh, setDayFourHigh] = useState<number>(0);
   const [dayFourLow, setDayFourLow] = useState<number>(0);
   const [dayFourImg, setDayFourImg] = useState<string | StaticImageData>(cloud);
-  const [dayFourAlt, setDayFourAlt] = useState<string>("");
   const [dayFive, setDayFive] = useState<string>("");
   const [dayFiveHigh, setDayFiveHigh] = useState<number>(0);
   const [dayFiveLow, setDayFiveLow] = useState<number>(0);
   const [dayFiveImg, setDayFiveImg] = useState<string | StaticImageData>(cloud);
-  const [dayFiveAlt, setDayFiveAlt] = useState<string>("");
 
-  function mostFrequent(arr: string[]) {
-    let count = 1,
-      max = 0,
-      element;
-
-    for (let i = 1; i < arr.length; ++i) {
-      if (arr[i] === arr[i - 1]) {
-        count++;
-      } else {
-        count = 1;
-      }
-      if (count > max) {
-        max = count;
-        element = arr[i];
-      }
+  const mostFrequent = (arr: Array<string>, n: number) => {
+    let maxcount = 0;
+    let element_having_max_freq;
+    for (let i = 0; i < n; i++) {
+        let count = 0;
+        for (let j = 0; j < n; j++) {
+            if (arr[i] == arr[j])
+                count++;
+        }
+        if (count > maxcount) {
+            maxcount = count;
+            element_having_max_freq = arr[i];
+        }
     }
+    return element_having_max_freq;
+}
 
-    return element || "";
-  }
-
-  const iconChange = (desc: string | StaticImageData) => {
-    switch (desc) {
+  const iconChange = (freq: string) => {
+    switch (freq) {
       case "clear sky":
         return sun;
       case "rain":
@@ -113,11 +105,11 @@ const Forecast = ({ lat, lng }: position) => {
       let day4desc: string[] = [];
       let day5desc: string[] = [];
 
-      let day1Freq = mostFrequent(day1desc);
-      let day2Freq = mostFrequent(day2desc);
-      let day3Freq = mostFrequent(day3desc);
-      let day4Freq = mostFrequent(day4desc);
-      let day5Freq = mostFrequent(day5desc);
+      let day1Freq = mostFrequent(day1desc, day1desc.length - 1);
+      let day2Freq = mostFrequent(day2desc, day2desc.length - 1);
+      let day3Freq = mostFrequent(day3desc, day3desc.length - 1);
+      let day4Freq = mostFrequent(day4desc, day4desc.length - 1);
+      let day5Freq = mostFrequent(day5desc, day5desc.length - 1);
 
       let currentDay = new Date();
 
@@ -215,15 +207,10 @@ const Forecast = ({ lat, lng }: position) => {
         setDayFourImg,
         setDayFiveImg,
       ];
-      const fiveDayAltArr = [
-        setDayOneAlt,
-        setDayTwoAlt,
-        setDayThreeAlt,
-        setDayFourAlt,
-        setDayFiveAlt,
-      ];
+  
       const dayFreq = [day1Freq, day2Freq, day3Freq, day4Freq, day5Freq];
 
+      
         
     };
 
@@ -234,31 +221,31 @@ const Forecast = ({ lat, lng }: position) => {
     <div className="lg:flex justify-center mt-6 md:space-x-20 text-[#212A79]">
       <div className="bg-[#CAE8FF] opacity-75 text-center w-1/2 md:w-[13%] h-56 rounded-xl text-xl max-md:mx-auto ">
         <p className="mt-5">{dayOne}</p>
-        <Image src={dayOneImg} alt={dayOneAlt} className="w-24 mx-auto"/>
+        <Image src={dayOneImg} alt="Current Weather Icon" className="w-24 mx-auto"/>
         <p>{`High: ${dayOneHigh}`}</p>
         <p className="mn-6">{`Low: ${dayOneLow}`}</p>
       </div>
       <div className="bg-[#CAE8FF] opacity-75 text-center w-1/2 md:w-[13%] h-56 rounded-xl text-xl max-md:mx-auto ">
         <p className="mt-5">{dayTwo}</p>
-        <Image src={dayTwoImg} alt={dayTwoAlt} className="w-24 mx-auto" />
+        <Image src={dayTwoImg} alt="Current Weather Icon" className="w-24 mx-auto" />
         <p>{`High: ${dayTwoHigh}`}</p>
         <p className="mn-6">{`Low: ${dayTwoLow}`}</p>
       </div>
       <div className="bg-[#CAE8FF] opacity-75 text-center w-1/2 md:w-[13%] h-56 rounded-xl text-xl max-md:mx-auto ">
         <p className="mt-5">{dayThree}</p>
-        <Image src={dayThreeImg} alt={dayThreeAlt} className="w-24 mx-auto" />
+        <Image src={dayThreeImg} alt="Current Weather Icon" className="w-24 mx-auto" />
         <p>{`High: ${dayThreeHigh}`}</p>
         <p className="mn-6">{`Low: ${dayThreeLow}`}</p>
       </div>
       <div className="bg-[#CAE8FF] opacity-75 text-center w-1/2 md:w-[13%] h-56 rounded-xl text-xl max-md:mx-auto ">
         <p className="mt-5">{dayFour}</p>
-        <Image src={dayFourImg} alt={dayFourAlt} className="w-24 mx-auto" />
+        <Image src={dayFourImg} alt="Current Weather Icon" className="w-24 mx-auto" />
         <p>{`High: ${dayFourHigh}`}</p>
         <p className="mn-6">{`Low: ${dayFourLow}`}</p>
       </div>
       <div className="bg-[#CAE8FF] opacity-75 text-center w-1/2 md:w-[13%] h-56 rounded-xl text-xl max-md:mx-auto ">
         <p className="mt-5">{dayFive}</p>
-        <Image src={dayFiveImg} alt={dayFiveAlt} className="w-24 mx-auto" />
+        <Image src={dayFiveImg} alt="Current Weather Icon" className="w-24 mx-auto" />
         <p>{`High: ${dayFiveHigh}`}</p>
         <p className="mn-6">{`Low: ${dayFiveLow}`}</p>
       </div>
